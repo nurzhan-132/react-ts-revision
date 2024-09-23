@@ -1,15 +1,22 @@
-import React, { ChangeEvent, MouseEvent, DragEvent, useState } from "react";
+import React, {
+  ChangeEvent,
+  MouseEvent,
+  DragEvent,
+  useState,
+  useRef,
+} from "react";
 
 const EventsExample = () => {
   const [value, setValue] = useState<string>("");
   const [isDrag, setIsDrag] = useState<boolean>(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const changeValue = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
-  const logValue = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log(value);
+  const clickHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    console.log(inputRef.current?.value);
   };
 
   const dragHandler = (e: DragEvent<HTMLDivElement>) => {
@@ -30,8 +37,13 @@ const EventsExample = () => {
 
   return (
     <div>
-      <input value={value} onChange={changeValue} />
-      <button onClick={logValue}>Button</button>
+      <input
+        value={value}
+        onChange={changeValue}
+        placeholder="with value and onChange"
+      />
+      <input ref={inputRef} placeholder="with useRef" />
+      <button onClick={clickHandler}>Button</button>
       <div
         onDrag={dragHandler}
         draggable
